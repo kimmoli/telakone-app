@@ -6,6 +6,21 @@ Page
 {
     id: page
 
+    function senddata(dest, event)
+    {
+        if (!st.running)
+        {
+            udp.send(hosturl.text, port.text, dest, event)
+            st.start()
+        }
+    }
+
+    Timer
+    {
+        id: st
+        interval: 100
+    }
+
     SilicaFlickable
     {
         anchors.fill: parent
@@ -29,33 +44,81 @@ Page
             spacing: Theme.paddingLarge
             PageHeader
             {
-                title: "UDP"
+                title: "Telakone"
             }
-            Label
+
+            TextField
             {
-                id: huu
-                x: Theme.paddingLarge
-                text: "UDP"
-                color: Theme.secondaryHighlightColor
-                font.pixelSize: Theme.fontSizeExtraLarge
+                id: hosturl
+                label: "Destination IP"
+                width: parent.width
+                focus: false
+                text: "192.168.1.1"
+                EnterKey.iconSource: "image://theme/icon-m-enter-accept"
+                EnterKey.onClicked:
+                {
+                    port.focus = true
+                }
+            }
+            TextField
+            {
+                id: port
+                label: "Port"
+                width: parent.width
+                focus: false
+                text: "4554"
+                EnterKey.iconSource: "image://theme/icon-m-enter-accept"
+                EnterKey.onClicked:
+                {
+                    payload.focus = true
+                }
             }
 
             Button
             {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: "send"
-                onClicked: udp.send("192.168.1.1", 4554, "testipaketti")
+                text: "Blink slow"
+                onClicked: senddata(2, 2)
             }
-
-
+            Button
+            {
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: "Blink fast"
+                onClicked: senddata(2, 4)
+            }
+            Button
+            {
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: "Blink off"
+                onClicked: senddata(2, 1)
+            }
+            Slider
+            {
+                id: sl
+                anchors.horizontalCenter: parent.horizontalCenter
+                width: parent.width - Theme.paddingLarge
+                minimumValue: -100
+                maximumValue: 100
+                value: 0
+                valueText: value
+                stepSize: 10
+                onValueChanged: senddata(5, (value & 0xff) | 0x8000)
+                onDownChanged: if (!sl.down) sl.value = 0
+            }
+            Label
+            {
+                id: rx
+                anchors.horizontalCenter: parent.horizontalCenter
+                width: parent.width - Theme.paddingLarge
+            }
         }
     }
 
     UdpTest
     {
         id: udp
-        onFail: huu.text = "Failed"
-        onSuccess: huu.text = "OK"
+        Component.onCompleted: udp.initClient(port.text)
+        onReceive: rx.text = datagram
     }
 }
 
