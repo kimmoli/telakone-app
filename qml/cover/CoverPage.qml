@@ -7,7 +7,8 @@ CoverBackground
     {
         id: label
         anchors.centerIn: parent
-        text: "UDP"
+        font.bold: true
+        text: "Telakone"
     }
 }
 

@@ -1,6 +1,5 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import kimmoli.UdpTest 1.0
 
 Page
 {
@@ -10,7 +9,7 @@ Page
     {
         if (!st.running)
         {
-            udp.send(hosturl.text, port.text, dest, event)
+            tkudp.send(hosturl.text, port.text, dest, event)
             st.start()
         }
     }
@@ -29,8 +28,8 @@ Page
         {
             MenuItem
             {
-                text: "blaa"
-                onClicked: console.log("blaa")
+                text: "Status"
+                onClicked: pageStack.push(Qt.resolvedUrl("StatusPage.qml"))
             }
         }
 
@@ -50,14 +49,15 @@ Page
             TextField
             {
                 id: hosturl
-                label: "Destination IP"
+                label: "Host IP"
                 width: parent.width
                 focus: false
-                text: "192.168.1.1"
+                text: conf.hosturl
                 EnterKey.iconSource: "image://theme/icon-m-enter-accept"
                 EnterKey.onClicked:
                 {
-                    port.focus = true
+                    conf.hosturl = hosturl.text
+                    hosturl.focus = false
                 }
             }
             TextField
@@ -66,11 +66,12 @@ Page
                 label: "Port"
                 width: parent.width
                 focus: false
-                text: "4554"
+                text: conf.hostport
                 EnterKey.iconSource: "image://theme/icon-m-enter-accept"
                 EnterKey.onClicked:
                 {
-                    payload.focus = true
+                    conf.hostport = port.text
+                    port.focus = false
                 }
             }
 
@@ -112,13 +113,6 @@ Page
                 width: parent.width - Theme.paddingLarge
             }
         }
-    }
-
-    UdpTest
-    {
-        id: udp
-        Component.onCompleted: udp.initClient(port.text)
-        onReceive: rx.text = datagram
     }
 }
 

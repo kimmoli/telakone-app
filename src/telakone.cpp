@@ -11,16 +11,16 @@
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication::setOrganizationDomain("KimmoLi");
-    QCoreApplication::setOrganizationName("KimmoLi");
-    QCoreApplication::setApplicationName("udptest");
+    QCoreApplication::setOrganizationDomain("kimmoli");
+    QCoreApplication::setOrganizationName("kimmoli");
+    QCoreApplication::setApplicationName("telakone");
     QCoreApplication::setApplicationVersion("0.0.1");
 
-    qmlRegisterType<UdpTest>("kimmoli.UdpTest", 1, 0, "UdpTest");
+    qmlRegisterType<UdpInterface>("Kimmoli.Telakone.Udp", 1, 0, "UdpInterface");
 
     QScopedPointer<QGuiApplication> app(SailfishApp::application(argc, argv));
     QScopedPointer<QQuickView> view(SailfishApp::createView());
-    view->setSource(SailfishApp::pathTo("qml/udptest.qml"));
+    view->setSource(SailfishApp::pathTo("qml/telakone.qml"));
     view->show();
 
     return app->exec();
