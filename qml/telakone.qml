@@ -23,6 +23,21 @@ ApplicationWindow
         property string hosturl: "localhost"
         property string hostport: "4554"
     }
+
+    function senddata(dest, event, force)
+    {
+        if (!st.running || force)
+        {
+            tkudp.send(conf.hosturl, conf.hostport, dest, event)
+            st.start()
+        }
+    }
+
+    Timer
+    {
+        id: st
+        interval: 100
+    }
 }
 
 

@@ -111,6 +111,14 @@ void UdpInterface::readDatagram()
             _status.insert("__SL_G_UAP", QString("%1").arg(t_float));
             ds >> t_float;
             _status.insert("__SL_G_UAR", QString("%1").arg(t_float));
+            ds >> t_float;
+            _status.insert("__SL_G_UBL", QString("%1 V").arg(t_float));
+            ds >> t_float;
+            _status.insert("__SL_G_UML", QString("%1 V").arg(t_float));
+            ds >> t_float;
+            _status.insert("__SL_G_UBR", QString("%1 V").arg(t_float));
+            ds >> t_float;
+            _status.insert("__SL_G_UMR", QString("%1 V").arg(t_float));
 
             qDebug() << _status;
 

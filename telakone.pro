@@ -17,4 +17,5 @@ SAILFISHAPP_ICONS = 86x86 108x108 128x128 256x256
 
 DISTFILES += \
     rpm/telakone.spec \
-    qml/pages/StatusPage.qml
+    qml/pages/StatusPage.qml \
+    qml/pages/Joystick.qml

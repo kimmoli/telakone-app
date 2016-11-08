@@ -5,21 +5,6 @@ Page
 {
     id: page
 
-    function senddata(dest, event)
-    {
-        if (!st.running)
-        {
-            tkudp.send(hosturl.text, port.text, dest, event)
-            st.start()
-        }
-    }
-
-    Timer
-    {
-        id: st
-        interval: 100
-    }
-
     SilicaFlickable
     {
         anchors.fill: parent
@@ -30,6 +15,11 @@ Page
             {
                 text: "Status"
                 onClicked: pageStack.push(Qt.resolvedUrl("StatusPage.qml"))
+            }
+            MenuItem
+            {
+                text: "Joystick"
+                onClicked: pageStack.push(Qt.resolvedUrl("Joystick.qml"))
             }
         }
 
@@ -79,19 +69,19 @@ Page
             {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: "Blink slow"
-                onClicked: senddata(2, 2)
+                onClicked: senddata(2, 2, 1)
             }
             Button
             {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: "Blink fast"
-                onClicked: senddata(2, 4)
+                onClicked: senddata(2, 4, 1)
             }
             Button
             {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: "Blink off"
-                onClicked: senddata(2, 1)
+                onClicked: senddata(2, 1, 1)
             }
             Slider
             {
@@ -103,7 +93,7 @@ Page
                 value: 0
                 valueText: value
                 stepSize: 10
-                onValueChanged: senddata(5, (value & 0xff) | 0x8000)
+                onValueChanged: senddata(5, (value & 0xff) | 0x8000, value == 0)
                 onDownChanged: if (!sl.down) sl.value = 0
             }
             Label
