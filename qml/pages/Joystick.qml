@@ -15,6 +15,12 @@ Page
         return (newscale * value) / oldscale - newscale/2
     }
 
+    /* Enable physical joystick when opening joystick page */
+    Component.onCompleted: senddata(7, 0x8000, 1)
+
+    /* Disable physical joystick when closing joystick page */
+    Component.onDestruction: senddata(7, 0x4000, 1)
+
     Timer
     {
         running: true
